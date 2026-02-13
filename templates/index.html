@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<h2 class="mb-4 text-center">👗 Clothing Review Sentiment Dashboard</h2>
+
+<!-- Review Form -->
+<form method="post" class="mb-3">
+    <div class="input-group">
+        <input type="text" class="form-control" name="review"
+        placeholder="Enter review"
+        pattern=".*[A-Za-z].*"
+        title="Please enter a real text review"
+        required>
+        <button class="btn btn-primary">Analyze</button>
+    </div>
+</form>
+
+<!-- Action Buttons -->
+<div class="mb-3 text-center">
+    <form action="/clear" method="post" style="display:inline;">
+        <button class="btn btn-danger">Clear History</button>
+    </form>
+
+    <a href="/export" class="btn btn-success ms-2">Download CSV</a>
+</div>
+
+<!-- Sentiment Result -->
+{% if sentiment %}
+<div class="alert 
+{% if sentiment == 'Positive' %}alert-success
+{% elif sentiment == 'Negative' %}alert-danger
+{% else %}alert-warning
+{% endif %}
+text-center">
+    <h4>Sentiment: {{ sentiment }}</h4>
+</div>
+{% endif %}
+
+<!-- Stats -->
+<h5>Total Reviews: {{ reviews|length }}</h5>
+
+<!-- Review Table -->
+<h4>Saved Reviews</h4>
+<table class="table table-bordered">
+<tr>
+    <th>Review</th>
+    <th>Sentiment</th>
+</tr>
+
+{% for r in reviews %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<!-- Charts -->
+<div class="row mt-4">
+
+<div class="col-md-6 text-center">
+<h5>Sentiment Chart</h5>
+<img src="/chart" class="img-fluid">
+</div>
+
+<div class="col-md-6 text-center">
+<h5>Word Cloud</h5>
+<img src="/wordcloud" class="img-fluid">
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
